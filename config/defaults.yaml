@@ -1,0 +1,246 @@
+# =============================================================================
+# Default Settings - AI Video Series Producer
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Video Generation Defaults
+# -----------------------------------------------------------------------------
+
+video:
+  duration: 5                    # seconds (5 or 10 for most providers)
+  resolution: "720p"             # 480p, 720p, 1080p, 4k
+  aspect_ratio: "16:9"           # 16:9, 9:16, 4:3, 1:1, 21:9
+  fps: 24                        # frames per second
+  format: "mp4"                  # output format
+
+# -----------------------------------------------------------------------------
+# Generation Settings
+# -----------------------------------------------------------------------------
+
+generation:
+  # Provider selection
+  preferred_provider: "fal"      # fal, google, runway, piapi, replicate
+  preferred_model: "kling-2.5"   # model identifier
+  fallback_provider: "google"    # if primary fails
+  fallback_model: "veo-3-fast"
+
+  # Quality settings
+  quality_preset: "balanced"     # fast, balanced, quality, cinematic
+
+  presets:
+    fast:
+      model: "veo-3-fast"
+      duration: 5
+      resolution: "480p"
+
+    balanced:
+      model: "kling-2.5"
+      duration: 5
+      resolution: "720p"
+
+    quality:
+      model: "kling-2.6"
+      duration: 10
+      resolution: "1080p"
+
+    cinematic:
+      model: "veo-3.1"
+      duration: 8
+      resolution: "1080p"
+      with_audio: true
+
+  # Retry settings
+  max_retries: 3
+  retry_delay: 5                 # seconds
+  timeout: 300                   # seconds (5 minutes)
+
+# -----------------------------------------------------------------------------
+# Reference Image Settings
+# -----------------------------------------------------------------------------
+
+references:
+  max_images: 4                  # maximum reference images
+  preferred_format: "png"        # png, jpg, webp
+  max_size_mb: 10               # maximum file size
+
+  # Recommended dimensions
+  dimensions:
+    character: "1024x1024"
+    scene: "1920x1080"
+    style: "1024x1024"
+
+  # Auto-processing
+  auto_resize: true
+  auto_optimize: true
+  preserve_aspect_ratio: true
+
+# -----------------------------------------------------------------------------
+# Character Consistency Settings
+# -----------------------------------------------------------------------------
+
+consistency:
+  # Reference weights (if supported by provider)
+  character_weight: 0.7          # 0.0 - 1.0
+  style_weight: 0.5
+  scene_weight: 0.3
+
+  # Frame chaining
+  use_last_frame: true           # use last frame as first frame for next scene
+  overlap_frames: 1              # frames to overlap when chaining
+
+  # Quality thresholds
+  min_consistency_score: 0.7     # reject if below this
+  auto_retry_on_drift: true      # retry if character drifts
+
+# -----------------------------------------------------------------------------
+# Prompt Engineering
+# -----------------------------------------------------------------------------
+
+prompts:
+  # Prompt structure
+  structure:
+    - "scene_description"
+    - "character_action"
+    - "camera_direction"
+    - "lighting_mood"
+    - "style_modifiers"
+
+  # Default style modifiers
+  default_style: "cinematic, professional lighting, high quality"
+
+  # Negative prompts (if supported)
+  default_negative: "blurry, distorted, low quality, amateur, watermark"
+
+  # Max prompt length
+  max_length: 1000
+
+# -----------------------------------------------------------------------------
+# Scene Chaining Settings
+# -----------------------------------------------------------------------------
+
+chaining:
+  enabled: true
+
+  # Method for creating continuity
+  method: "last_frame"           # last_frame, reference_lock, style_anchor
+
+  # Frame extraction
+  extract_last_frame: true
+  frame_quality: 95              # JPEG quality for extracted frames
+
+  # Transition handling
+  transition_type: "seamless"    # seamless, cut, fade
+  transition_prompt_suffix: ", continuing from previous scene"
+
+# -----------------------------------------------------------------------------
+# Output Settings
+# -----------------------------------------------------------------------------
+
+output:
+  # Directory structure
+  base_path: "./output"
+  organize_by: "series"          # series, date, episode
+
+  # Naming convention
+  naming_pattern: "{series}_{episode}_{scene}_{take}"
+
+  # Metadata
+  save_metadata: true
+  metadata_format: "json"        # json, yaml
+  include_generation_params: true
+  include_prompts: true
+
+  # Thumbnails
+  generate_thumbnails: true
+  thumbnail_size: "320x180"
+
+# -----------------------------------------------------------------------------
+# Storage Settings
+# -----------------------------------------------------------------------------
+
+storage:
+  type: "local"                  # local, s3, gcs
+
+  local:
+    path: "./output"
+    max_size_gb: 100
+    auto_cleanup: false
+    cleanup_after_days: 30
+
+  s3:
+    bucket: "${AWS_S3_BUCKET}"
+    prefix: "video-series/"
+    region: "${AWS_REGION}"
+
+  gcs:
+    bucket: "${GCS_BUCKET}"
+    prefix: "video-series/"
+
+# -----------------------------------------------------------------------------
+# Notification Settings
+# -----------------------------------------------------------------------------
+
+notifications:
+  enabled: false
+
+  on_generation_complete: true
+  on_generation_failed: true
+  on_episode_complete: true
+  on_quality_warning: true
+
+  channels:
+    slack:
+      enabled: false
+      webhook: "${SLACK_WEBHOOK_URL}"
+    discord:
+      enabled: false
+      webhook: "${DISCORD_WEBHOOK_URL}"
+
+# -----------------------------------------------------------------------------
+# Quality Review Settings
+# -----------------------------------------------------------------------------
+
+quality:
+  # Automated review
+  auto_review: false
+  review_provider: "claude"      # claude, openai
+
+  # Review criteria
+  check_character_consistency: true
+  check_style_consistency: true
+  check_motion_quality: true
+  check_artifacts: true
+
+  # Thresholds
+  min_quality_score: 0.7
+  auto_reject_below: 0.5
+  auto_approve_above: 0.9
+
+# -----------------------------------------------------------------------------
+# Logging Settings
+# -----------------------------------------------------------------------------
+
+logging:
+  level: "INFO"                  # DEBUG, INFO, WARNING, ERROR
+  file: "./logs/video_producer.log"
+  max_size_mb: 100
+  backup_count: 5
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# -----------------------------------------------------------------------------
+# Performance Settings
+# -----------------------------------------------------------------------------
+
+performance:
+  # Parallel processing
+  max_concurrent_generations: 3
+  max_concurrent_uploads: 5
+
+  # Caching
+  cache_enabled: true
+  cache_ttl: 3600                # seconds
+  cache_references: true
+
+  # Rate limiting
+  requests_per_minute: 10
+  respect_provider_limits: true

@@ -1,0 +1,39 @@
+# AI Video Series Producer - Requirements
+# ========================================
+
+# Core dependencies
+httpx>=0.25.0
+pyyaml>=6.0
+python-dotenv>=1.0.0
+
+# Async support
+asyncio-throttle>=1.0.0
+
+# API integrations (optional - install as needed)
+# fal-client>=0.1.0  # fal.ai SDK (optional, we use HTTP directly)
+# replicate>=0.15.0  # Replicate SDK (optional)
+# google-generativeai>=0.3.0  # Google Gemini SDK (optional)
+
+# Image processing (optional, for frame extraction)
+Pillow>=10.0.0
+
+# CLI tools
+click>=8.0.0
+rich>=13.0.0  # Pretty terminal output
+
+# Web API (for n8n webhook handler)
+fastapi>=0.100.0
+uvicorn>=0.23.0
+pydantic>=2.0.0
+
+# Database (for scene tracking)
+# SQLite is built-in, no extra deps needed
+
+# Development dependencies
+# pytest>=7.0.0
+# pytest-asyncio>=0.21.0
+# black>=23.0.0
+# ruff>=0.1.0
+
+# Optional: Video processing (requires ffmpeg installed)
+# ffmpeg-python>=0.2.0

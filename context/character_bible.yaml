@@ -1,0 +1,249 @@
+# =============================================================================
+# Character Bible - AI Video Series Producer
+# =============================================================================
+# Define your characters here for consistent generation across all episodes
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Series Metadata
+# -----------------------------------------------------------------------------
+
+series:
+  name: "My AI Series"
+  description: "A compelling story brought to life with AI video generation"
+  genre: "drama"                 # drama, comedy, action, scifi, fantasy, etc.
+  tone: "cinematic"              # cinematic, documentary, animated, stylized
+  target_audience: "general"
+
+# -----------------------------------------------------------------------------
+# Visual Style (Series-Wide)
+# -----------------------------------------------------------------------------
+
+visual_style:
+  # Overall aesthetic
+  style_description: |
+    Cinematic quality with warm color grading, professional lighting,
+    slight film grain for organic feel. Modern but timeless aesthetic.
+
+  # Style reference image (optional)
+  style_reference: "./references/styles/series_style.jpg"
+
+  # Consistent modifiers to append to all prompts
+  style_modifiers:
+    - "cinematic lighting"
+    - "professional color grading"
+    - "shallow depth of field"
+    - "35mm film aesthetic"
+    - "warm tones"
+
+  # Negative modifiers
+  negative_modifiers:
+    - "amateur"
+    - "overexposed"
+    - "blurry"
+    - "distorted faces"
+    - "watermark"
+
+  # Camera preferences
+  camera_style:
+    default_movement: "steady"   # steady, handheld, gimbal
+    preferred_angles: ["eye level", "slight low angle"]
+    avoid_angles: ["extreme dutch angle", "bird's eye"]
+
+# -----------------------------------------------------------------------------
+# Characters
+# -----------------------------------------------------------------------------
+
+characters:
+  # ---------------------------------------------------------------------------
+  # Main Character Template
+  # ---------------------------------------------------------------------------
+  protagonist:
+    # Identity
+    name: "Alex"
+    role: "protagonist"
+    importance: "primary"        # primary, secondary, background
+
+    # Visual Description (for prompts)
+    visual:
+      age: "early 30s"
+      gender: "female"
+      ethnicity: "caucasian"
+      build: "athletic"
+      height: "average"
+
+      # Facial features (be specific for consistency)
+      face:
+        shape: "oval"
+        eyes: "green, expressive"
+        hair: "auburn, shoulder-length, slight wave"
+        skin: "fair with light freckles"
+        distinguishing: "small scar on left eyebrow"
+
+      # Default appearance
+      default_outfit:
+        top: "dark leather jacket over white t-shirt"
+        bottom: "dark jeans"
+        accessories: "silver watch, simple necklace"
+
+    # Reference images
+    references:
+      front: "./references/characters/alex_front.jpg"
+      three_quarter: "./references/characters/alex_3quarter.jpg"
+      profile: "./references/characters/alex_profile.jpg"
+      full_body: "./references/characters/alex_fullbody.jpg"
+
+    # Prompt fragments (reusable)
+    prompt_fragments:
+      identity: "30-year-old woman with auburn shoulder-length hair, green eyes, athletic build"
+      outfit_default: "wearing dark leather jacket over white t-shirt, dark jeans"
+      style: "natural makeup, confident posture"
+
+    # Personality (for action descriptions)
+    personality:
+      traits: ["determined", "intelligent", "guarded"]
+      mannerisms: ["slight head tilt when thinking", "direct eye contact"]
+      movement_style: "purposeful, economical movements"
+
+  # ---------------------------------------------------------------------------
+  # Secondary Character Template
+  # ---------------------------------------------------------------------------
+  mentor:
+    name: "Marcus"
+    role: "mentor"
+    importance: "secondary"
+
+    visual:
+      age: "mid 50s"
+      gender: "male"
+      ethnicity: "african american"
+      build: "tall, lean"
+
+      face:
+        shape: "angular"
+        eyes: "brown, wise"
+        hair: "silver, short cropped"
+        skin: "dark"
+        distinguishing: "thin reading glasses, grey beard stubble"
+
+      default_outfit:
+        top: "navy blue sweater"
+        bottom: "charcoal slacks"
+        accessories: "reading glasses, leather briefcase"
+
+    references:
+      front: "./references/characters/marcus_front.jpg"
+      three_quarter: "./references/characters/marcus_3quarter.jpg"
+
+    prompt_fragments:
+      identity: "55-year-old man with silver short-cropped hair, brown eyes, tall lean build"
+      outfit_default: "wearing navy blue sweater and charcoal slacks, thin reading glasses"
+      style: "distinguished, scholarly appearance"
+
+    personality:
+      traits: ["wise", "patient", "mysterious"]
+      mannerisms: ["adjusts glasses when making a point", "measured speech"]
+      movement_style: "deliberate, unhurried"
+
+  # ---------------------------------------------------------------------------
+  # Add more characters as needed
+  # ---------------------------------------------------------------------------
+  # antagonist:
+  #   name: "..."
+  #   ...
+
+# -----------------------------------------------------------------------------
+# Locations / Sets
+# -----------------------------------------------------------------------------
+
+locations:
+  office:
+    name: "Alex's Office"
+    description: |
+      Modern but lived-in office space. Large windows with city view.
+      Minimalist desk with laptop, scattered papers, coffee mug.
+      Bookshelf with mix of technical books and personal items.
+
+    reference: "./references/scenes/office.jpg"
+
+    prompt_fragments:
+      setting: "modern office with large windows overlooking city skyline"
+      lighting: "natural daylight through windows, warm afternoon light"
+      details: "minimalist desk, laptop, scattered papers, coffee mug"
+
+    mood_variants:
+      morning: "bright morning light, fresh start feeling"
+      evening: "warm golden hour light through windows, reflective mood"
+      night: "desk lamp lighting, city lights visible outside"
+
+  street:
+    name: "City Street"
+    description: |
+      Urban street scene. Mix of modern and historic architecture.
+      Busy but not crowded. Street cafes, shops, pedestrians.
+
+    reference: "./references/scenes/street.jpg"
+
+    prompt_fragments:
+      setting: "urban city street with mixed architecture"
+      lighting: "variable based on time of day"
+      details: "street cafes, shops, pedestrians in background"
+
+# -----------------------------------------------------------------------------
+# Props / Objects
+# -----------------------------------------------------------------------------
+
+props:
+  laptop:
+    description: "Alex's silver laptop with stickers on the lid"
+    reference: "./references/props/laptop.jpg"
+    prompt_fragment: "silver laptop with colorful stickers"
+
+  briefcase:
+    description: "Marcus's worn leather briefcase"
+    reference: "./references/props/briefcase.jpg"
+    prompt_fragment: "vintage brown leather briefcase"
+
+# -----------------------------------------------------------------------------
+# Prompt Templates
+# -----------------------------------------------------------------------------
+
+prompt_templates:
+  # Standard scene template
+  standard_scene: |
+    {location_setting}. {character_identity} {character_outfit}.
+    {action_description}. {camera_direction}.
+    {style_modifiers}.
+
+  # Character introduction
+  character_intro: |
+    {location_setting}. {character_identity} {character_outfit}.
+    {character_name} {action_description}, {personality_mannerism}.
+    Medium shot, slight push in. {style_modifiers}.
+
+  # Two-character scene
+  two_character: |
+    {location_setting}. {character_1_identity} and {character_2_identity}.
+    {action_description}. {camera_direction}.
+    {style_modifiers}.
+
+  # Continuation scene (for chaining)
+  continuation: |
+    Continuing from previous scene. {character_identity} {character_outfit}.
+    {action_description}. Seamless continuation of motion.
+    {style_modifiers}.
+
+# -----------------------------------------------------------------------------
+# Generation History Tracking
+# -----------------------------------------------------------------------------
+
+generation_tracking:
+  enabled: true
+  track_seeds: true
+  track_params: true
+  track_quality_scores: true
+
+  # Reference for consistency
+  best_generations:
+    alex_standard: null          # Will be populated with best generation IDs
+    marcus_standard: null

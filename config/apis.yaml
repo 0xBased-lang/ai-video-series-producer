@@ -1,0 +1,303 @@
+# =============================================================================
+# API Configuration - AI Video Series Producer
+# =============================================================================
+# Configure your preferred video generation APIs and their settings
+# =============================================================================
+
+# Default provider to use when not specified
+default_provider: fal
+
+# -----------------------------------------------------------------------------
+# Provider Configurations
+# -----------------------------------------------------------------------------
+
+providers:
+  # ---------------------------------------------------------------------------
+  # fal.ai - Recommended Unified API
+  # ---------------------------------------------------------------------------
+  fal:
+    name: "fal.ai"
+    base_url: "https://fal.run"
+    auth_type: "bearer"
+    env_key: "FAL_API_KEY"
+
+    models:
+      kling-2.5:
+        endpoint: "fal-ai/kling-video/v2.5/standard/text-to-video"
+        supports_reference: true
+        max_references: 4
+        max_duration: 10
+        resolutions: ["480p", "720p", "1080p"]
+        pricing_per_5s: 0.33
+
+      kling-2.6:
+        endpoint: "fal-ai/kling-video/v2.6/pro/image-to-video"
+        supports_reference: true
+        max_references: 4
+        max_duration: 10
+        has_audio: true
+        pricing_per_5s: 0.42
+
+      veo-3:
+        endpoint: "fal-ai/veo3"
+        supports_reference: true
+        max_references: 3
+        max_duration: 8
+        has_audio: true
+        pricing_per_second: 0.40
+
+      veo-3-fast:
+        endpoint: "fal-ai/veo3/fast"
+        supports_reference: true
+        max_references: 3
+        max_duration: 8
+        has_audio: false
+        pricing_per_second: 0.20
+
+      hailuo-02:
+        endpoint: "fal-ai/minimax/hailuo-02/standard/image-to-video"
+        supports_reference: true
+        max_references: 1
+        max_duration: 6
+        pricing_per_video: 0.50
+
+      wan-2.1:
+        endpoint: "fal-ai/wan-i2v"
+        supports_reference: true
+        supports_lora: true
+        max_duration: 5
+        resolutions: ["480p", "720p"]
+        pricing_per_video: 0.40
+
+  # ---------------------------------------------------------------------------
+  # Google Veo (Direct API)
+  # ---------------------------------------------------------------------------
+  google:
+    name: "Google Veo"
+    base_url: "https://generativelanguage.googleapis.com/v1beta"
+    auth_type: "api_key"
+    env_key: "GOOGLE_API_KEY"
+
+    models:
+      veo-3.1:
+        endpoint: "/models/veo-3.1-generate-preview:generateVideo"
+        supports_reference: true
+        max_references: 3
+        max_duration: 8
+        has_audio: true
+        supports_extension: true
+        pricing_per_second: 0.40
+
+      veo-2:
+        endpoint: "/models/veo-2.0-generate-exp:generateVideo"
+        supports_reference: true
+        supports_style_reference: true
+        max_references: 3
+        max_duration: 8
+        pricing_per_second: 0.35
+
+  # ---------------------------------------------------------------------------
+  # Runway
+  # ---------------------------------------------------------------------------
+  runway:
+    name: "Runway"
+    base_url: "https://api.runwayml.com/v1"
+    auth_type: "bearer"
+    env_key: "RUNWAY_API_KEY"
+
+    models:
+      gen-4-turbo:
+        endpoint: "/generations"
+        supports_reference: true
+        max_references: 1
+        max_duration: 10
+        durations: [5, 10]
+        aspect_ratios: ["16:9", "9:16", "4:3", "3:4", "1:1", "21:9"]
+        has_persistent_memory: true
+
+      gen-4-image:
+        endpoint: "/image_generations"
+        supports_reference: true
+        for_first_frame: true
+
+  # ---------------------------------------------------------------------------
+  # PiAPI (Kling specialist)
+  # ---------------------------------------------------------------------------
+  piapi:
+    name: "PiAPI"
+    base_url: "https://api.piapi.ai"
+    auth_type: "bearer"
+    env_key: "PIAPI_API_KEY"
+
+    models:
+      kling-2.5-pro:
+        endpoint: "/api/kling/v1/video/generation"
+        model_id: "kling-v2-5-pro"
+        supports_reference: true
+        max_references: 4
+        max_duration: 10
+        pricing_5s: 0.33
+        pricing_10s: 0.66
+
+      kling-2.1-master:
+        endpoint: "/api/kling/v1/video/generation"
+        model_id: "kling-v2-1-master"
+        supports_reference: true
+        pricing_5s: 0.96
+        pricing_10s: 1.92
+
+  # ---------------------------------------------------------------------------
+  # MiniMax (Direct API)
+  # ---------------------------------------------------------------------------
+  minimax:
+    name: "MiniMax Hailuo"
+    base_url: "https://api.minimax.io/v1"
+    auth_type: "bearer"
+    env_key: "MINIMAX_API_KEY"
+    requires_group_id: true
+
+    models:
+      s2v-01:
+        endpoint: "/video_generation"
+        model_id: "S2V-01"
+        supports_reference: true
+        max_references: 1
+        subject_consistency: true
+        max_duration: 6
+
+      hailuo-02:
+        endpoint: "/video_generation"
+        model_id: "video-01"
+        supports_reference: true
+        max_duration: 6
+
+  # ---------------------------------------------------------------------------
+  # Luma AI
+  # ---------------------------------------------------------------------------
+  luma:
+    name: "Luma AI"
+    base_url: "https://api.lumalabs.ai/dream-machine/v1"
+    auth_type: "bearer"
+    env_key: "LUMA_API_KEY"
+
+    models:
+      ray-3:
+        endpoint: "/generations"
+        supports_reference: true
+        max_references: 1
+        max_duration: 10
+        has_hdr: true
+        has_draft_mode: true
+
+      ray-2:
+        endpoint: "/generations"
+        supports_reference: true
+        max_duration: 5
+
+  # ---------------------------------------------------------------------------
+  # Replicate (Open Source + LoRA)
+  # ---------------------------------------------------------------------------
+  replicate:
+    name: "Replicate"
+    base_url: "https://api.replicate.com/v1"
+    auth_type: "bearer"
+    env_key: "REPLICATE_API_TOKEN"
+
+    models:
+      hunyuan-video-lora:
+        model_id: "zsxkib/hunyuan-video-lora"
+        supports_lora: true
+        supports_training: true
+        max_duration: 5
+
+      wan-2.1-lora:
+        model_id: "fofr/wan2.1-with-lora"
+        supports_lora: true
+        supports_reference: true
+
+      veo-3.1:
+        model_id: "google/veo-3.1"
+        supports_reference: true
+        max_references: 3
+
+  # ---------------------------------------------------------------------------
+  # AIMLAPI (Unified)
+  # ---------------------------------------------------------------------------
+  aimlapi:
+    name: "AIMLAPI"
+    base_url: "https://api.aimlapi.com/v2"
+    auth_type: "bearer"
+    env_key: "AIMLAPI_KEY"
+
+    models:
+      veo-3-fast:
+        endpoint: "/video/generations"
+        model_id: "google/veo-3-fast"
+        supports_reference: true
+
+      luma-ray:
+        endpoint: "/video/generations"
+        model_id: "luma/ray"
+        supports_reference: true
+
+      minimax-hailuo:
+        endpoint: "/video/generations"
+        model_id: "minimax/video-01"
+        supports_reference: true
+
+  # ---------------------------------------------------------------------------
+  # OpenAI Sora (Limited Access)
+  # ---------------------------------------------------------------------------
+  openai:
+    name: "OpenAI Sora"
+    base_url: "https://api.openai.com/v1"
+    auth_type: "bearer"
+    env_key: "OPENAI_API_KEY"
+
+    models:
+      sora-2:
+        endpoint: "/videos"
+        supports_reference: true
+        max_duration: 20
+        has_audio: true
+        has_character_id: true
+
+      sora-2-pro:
+        endpoint: "/videos"
+        supports_reference: true
+        max_duration: 60
+        has_audio: true
+        has_character_id: true
+        production_quality: true
+
+# -----------------------------------------------------------------------------
+# Capability Matrix (for automatic provider selection)
+# -----------------------------------------------------------------------------
+
+capabilities:
+  character_consistency:
+    best: ["runway", "kling-2.6", "minimax-s2v-01"]
+    good: ["veo-3.1", "luma-ray-3", "sora-2"]
+
+  multi_reference:
+    4_images: ["kling-2.5", "kling-2.6"]
+    3_images: ["veo-3.1", "veo-2"]
+    1_image: ["runway", "hailuo", "luma"]
+
+  long_duration:
+    60s: ["sora-2-pro"]
+    20s: ["sora-2"]
+    10s: ["kling", "runway", "luma"]
+    8s: ["veo"]
+
+  audio_generation:
+    native: ["veo-3.1", "kling-2.6", "sora-2"]
+    none: ["runway", "luma", "wan"]
+
+  lora_support:
+    full: ["replicate-hunyuan", "replicate-wan"]
+    none: ["veo", "runway", "kling"]
+
+  scene_extension:
+    supported: ["veo-3.1", "luma", "sora-2"]
+    chain_required: ["kling", "runway", "hailuo"]
