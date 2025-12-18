@@ -5,11 +5,23 @@ A comprehensive framework for creating AI-generated video series with **consiste
 ## Features
 
 - **Multi-Provider Support**: fal.ai, Google Veo, Runway, Kling, MiniMax Hailuo, Luma, Replicate
-- **Character Bible**: Define characters once, use everywhere
+- **Fluent Builder API**: Clean, readable series setup with method chaining
+- **Character Bible**: Define characters once, use everywhere with consistent prompts
+- **Style Presets**: Cinematic, Anime, Documentary, Noir, Sci-Fi styles built-in
+- **Quality Presets**: Draft, Balanced, High, Cinematic quality levels
 - **Scene Chaining**: Automatic frame continuity between clips
 - **Context Preservation**: Track generation history for consistency
+- **Security Built-in**: Path validation, input sanitization, safe error handling
 - **n8n Integration**: Workflow automation templates included
 - **CLI & API**: Use from command line or as a library
+
+## What's New in v0.2.0
+
+- **Clean Series Builder**: Fluent API for setting up video series
+- **Character Builder**: Type-safe character creation with prompts
+- **Style System**: Visual presets and custom style configuration
+- **Core Module**: Centralized config, exceptions, and security utilities
+- **Improved Architecture**: Reduced code duplication, better error handling
 
 ## Quick Start
 
@@ -40,7 +52,75 @@ cp .env.example .env
 - `GOOGLE_API_KEY` - Get from [Google AI Studio](https://aistudio.google.com/)
 - `RUNWAY_API_KEY` - Get from [Runway](https://runwayml.com/)
 
-### 3. Generate Your First Video
+### 3. Create Your First Series (New Clean API)
+
+```python
+from src import create_series, CharacterBuilder, QualityPreset
+
+# Create a series with the fluent builder
+series = (
+    create_series("My Adventure Series")
+    .description("An epic journey of discovery")
+    .genre("adventure")
+
+    # Visual style (choose one)
+    .cinematic_style()  # or .anime_style(), .noir_style(), .scifi_style()
+
+    # Quality preset
+    .high_quality()  # or .draft_quality(), .cinematic_quality()
+
+    # Add characters
+    .character(
+        CharacterBuilder("hero")
+        .name("Alex Chen")
+        .age("30")
+        .gender("female")
+        .hair("auburn", "shoulder-length wavy")
+        .eyes("green")
+        .outfit("leather jacket, dark jeans")
+        .feature("small scar on left cheek")
+        .reference("front", "refs/alex_front.jpg")
+        .build()
+    )
+    .character(
+        CharacterBuilder("mentor")
+        .name("Marcus")
+        .age("55")
+        .gender("male")
+        .hair("gray", "short")
+        .outfit("tweed jacket, reading glasses")
+        .build()
+    )
+
+    # Add locations
+    .location("cafe", "Coffee Shop", "cozy coffee shop, warm lighting, brick walls")
+    .location("street", "City Street", "busy urban street at golden hour")
+
+    # Production settings
+    .provider("fal")
+    .model("kling-2.5")
+    .output_path("./output/my_series")
+
+    # Pre-plan episodes
+    .episode(
+        title="The Beginning",
+        scenes=[
+            {"character_id": "hero", "action": "sitting alone, looking thoughtful", "location_id": "cafe"},
+            {"character_id": "mentor", "action": "approaching the table", "location_id": "cafe"},
+        ]
+    )
+
+    .build()
+)
+
+# Save configuration for later
+create_series("My Series").save("./my_series.yaml")
+
+# Load existing configuration
+loaded = load_series("./my_series.yaml").build()
+```
+
+### 4. Quick Generation (CLI)
 
 ```bash
 # Simple generation
